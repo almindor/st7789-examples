@@ -1,0 +1,19 @@
+[package]
+name = "st7789-examples"
+version = "0.1.0"
+authors = ["Ales Katona <almindor@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+cortex-m = "0.6.2"
+cortex-m-rt = "0.6.12"
+embedded-graphics = "0.6.0-beta.2"
+embedded-hal = "0.2.3"
+cortex-m-semihosting = "0.3.5"
+panic-halt = "0.2.0"
+st7789 = "0.1.0"
+
+[dependencies.nrf52832-hal]
+version = "0.8.1"
+default-features = false
+features = ["xxAA-package", "rt"]
