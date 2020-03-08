@@ -8,3 +8,4 @@ Run `cargo run --release --example <name>` where `<name>` is the example name.
 ### List of examples
 
 `shapes` - display all shapes supported by embedded-graphics
+`image` - draw a raw image
