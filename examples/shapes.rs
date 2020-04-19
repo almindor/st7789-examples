@@ -51,7 +51,6 @@ fn main() -> ! {
     // set default orientation
     display.set_orientation(&Orientation::Landscape).unwrap();
 
-    let blank = Rectangle::new(Point::new(0, 0), Point::new(239, 239)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK));
     let circle1 = Circle::new(Point::new(128, 64), 64).into_styled(PrimitiveStyle::with_fill(Rgb565::RED));
     let circle2 = Circle::new(Point::new(64, 64), 64).into_styled(PrimitiveStyle::with_stroke(Rgb565::GREEN, 1));
 
@@ -65,7 +64,7 @@ fn main() -> ! {
     let line = Line::new(Point::new(180, 160), Point::new(239, 239)).into_styled(PrimitiveStyle::with_stroke(RgbColor::WHITE, 10));
 
     // draw two circles on blue background
-    blank.draw(&mut display).unwrap();
+    display.clear(Rgb565::BLACK).unwrap();
     circle1.draw(&mut display).unwrap();
     circle2.draw(&mut display).unwrap();
     triangle.draw(&mut display).unwrap();
