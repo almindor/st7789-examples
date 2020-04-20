@@ -7,20 +7,21 @@ extern crate nrf52832_hal;
 extern crate panic_halt;
 
 use cortex_m_rt::entry;
-use embedded_graphics::prelude::*;
+use cortex_m_semihosting::hprintln;
+use display_interface_spi::SPIInterfaceNoCS;
 use embedded_graphics::image::*;
 use embedded_graphics::pixelcolor::Rgb565;
+use embedded_graphics::prelude::*;
 use nrf52832_hal::gpio::Level;
 use nrf52832_hal::gpio::*;
 use nrf52832_hal::spim;
 use nrf52832_hal::Delay;
-use st7789::{ST7789, Orientation};
-use cortex_m_semihosting::hprintln;
+use st7789::{Orientation, ST7789};
 
 #[entry]
 fn main() -> ! {
     let core = nrf52832_hal::nrf52832_pac::CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST);
+    let mut delay = Delay::new(core.SYST);
 
     let p = nrf52832_hal::nrf52832_pac::Peripherals::take().unwrap();
     let port0 = p.P0.split();
@@ -42,18 +43,21 @@ fn main() -> ! {
     // create SPI interface
     let spi = spim::Spim::new(p.SPIM0, pins, spim::Frequency::M8, spim::MODE_3, 122);
 
+    // display interface abstraction from SPI and DC
+    let di = SPIInterfaceNoCS::new(spi, dc);
+
     // create driver
-    let mut display = ST7789::new(spi, dc, rst, 240, 240, delay);
+    let mut display = ST7789::new(di, rst, 240, 240);
 
     // initialize
-    display.init().unwrap();
+    display.init(&mut delay).unwrap();
     // set default orientation
     display.set_orientation(&Orientation::Landscape).unwrap();
-    
+
     let raw_image_data = ImageRawLE::new(include_bytes!("../assets/ferris.raw"), 86, 64);
     let ferris = Image::new(&raw_image_data, Point::new(34, 8));
 
-    // draw two circles on blue background
+    // draw image on black background
     display.clear(Rgb565::BLACK).unwrap();
     ferris.draw(&mut display).unwrap();
 
