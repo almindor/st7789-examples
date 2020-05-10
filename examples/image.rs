@@ -52,7 +52,7 @@ fn main() -> ! {
     // initialize
     display.init(&mut delay).unwrap();
     // set default orientation
-    display.set_orientation(&Orientation::Landscape).unwrap();
+    display.set_orientation(Orientation::Landscape).unwrap();
 
     let raw_image_data = ImageRawLE::new(include_bytes!("../assets/ferris.raw"), 86, 64);
     let ferris = Image::new(&raw_image_data, Point::new(34, 8));

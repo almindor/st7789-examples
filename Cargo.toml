@@ -7,13 +7,13 @@ edition = "2018"
 [dependencies]
 cortex-m = "0.6.2"
 cortex-m-rt = "0.6.12"
-display-interface = "0.2"
-display-interface-spi = "0.2.0"
+display-interface = "0.3"
+display-interface-spi = "0.3.0"
 embedded-graphics = "0.6.2"
 embedded-hal = "0.2.3"
 cortex-m-semihosting = "0.3.5"
 panic-halt = "0.2.0"
-st7789 = "0.3.1"
+st7789 = "0.4.0"
 
 [dependencies.nrf52832-hal]
 version = "0.10.0"
