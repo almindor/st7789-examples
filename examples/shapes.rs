@@ -48,7 +48,7 @@ fn main() -> ! {
     let di = SPIInterfaceNoCS::new(spi, dc);
 
     // create driver
-    let mut display = ST7789::new(di, rst, 240, 240);
+    let mut display = ST7789::new(di, rst);
 
     // initialize
     display.init(&mut delay).unwrap();
