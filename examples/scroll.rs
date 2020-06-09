@@ -13,6 +13,7 @@ use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::*;
 use embedded_graphics::primitives::*;
 use embedded_graphics::style::*;
+use nrf52832_hal::prelude::*;
 use nrf52832_hal::gpio::p0::Parts;
 use nrf52832_hal::gpio::Level;
 use nrf52832_hal::spim;
@@ -55,36 +56,44 @@ fn main() -> ! {
     // set default orientation
     display.set_orientation(Orientation::Landscape).unwrap();
 
-    let circle1 =
-        Circle::new(Point::new(128, 64), 64).into_styled(PrimitiveStyle::with_fill(Rgb565::RED));
-    let circle2 = Circle::new(Point::new(64, 64), 64)
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::GREEN, 1));
-
-    let blue_with_red_outline = PrimitiveStyleBuilder::new()
-        .fill_color(Rgb565::BLUE)
-        .stroke_color(Rgb565::RED)
-        .stroke_width(1) // > 1 is not currently supported in embedded-graphics on triangles
-        .build();
-    let triangle = Triangle::new(
-        Point::new(40, 120),
-        Point::new(40, 220),
-        Point::new(140, 120),
-    )
-    .into_styled(blue_with_red_outline);
-
-    let line = Line::new(Point::new(180, 160), Point::new(239, 239))
+    // 3 lines composing a big "F"
+    let line1 = Line::new(Point::new(100, 20), Point::new(100, 220))
+        .into_styled(PrimitiveStyle::with_stroke(RgbColor::WHITE, 10));
+    let line2 = Line::new(Point::new(100, 20), Point::new(160, 20))
+        .into_styled(PrimitiveStyle::with_stroke(RgbColor::WHITE, 10));
+    let line3 = Line::new(Point::new(100, 105), Point::new(160, 105))
         .into_styled(PrimitiveStyle::with_stroke(RgbColor::WHITE, 10));
 
-    // draw two circles on black background
+    // triangle to be shown "in the scroll zone"
+    let triangle = Triangle::new(
+        Point::new(240, 100),
+        Point::new(240, 140),
+        Point::new(320, 120),
+    ).into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN));
+
+    // draw the "F" + scroll-section arrow triangle
     display.clear(Rgb565::BLACK).unwrap();
-    circle1.draw(&mut display).unwrap();
-    circle2.draw(&mut display).unwrap();
+    line1.draw(&mut display).unwrap();
+    line2.draw(&mut display).unwrap();
+    line3.draw(&mut display).unwrap();
     triangle.draw(&mut display).unwrap();
-    line.draw(&mut display).unwrap();
 
-    hprintln!("Rendering done").unwrap();
+    hprintln!("Rendering done, scrolling...").unwrap();
 
+    let mut scroll = 1u16; // absolute scroll offset
+    let mut direction = true; // direction
+    let scroll_delay = 20u8; // delay between steps
     loop {
-        continue; // keep optimizer from removing in --release
+        delay.delay_ms(scroll_delay);
+        display.set_scroll_offset(scroll).unwrap();
+
+        if scroll % 80 == 0 {
+            direction = !direction;
+        }
+
+        match direction {
+            true => scroll += 1,
+            false => scroll -= 1,
+        }
     }
 }
