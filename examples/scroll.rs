@@ -12,10 +12,9 @@ use display_interface_spi::SPIInterfaceNoCS;
 use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::*;
 use embedded_graphics::primitives::*;
-use embedded_graphics::style::*;
-use nrf52832_hal::prelude::*;
 use nrf52832_hal::gpio::p0::Parts;
 use nrf52832_hal::gpio::Level;
+use nrf52832_hal::prelude::*;
 use nrf52832_hal::spim;
 use nrf52832_hal::Delay;
 use st7789::{Orientation, ST7789};
@@ -69,7 +68,8 @@ fn main() -> ! {
         Point::new(240, 100),
         Point::new(240, 140),
         Point::new(320, 120),
-    ).into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN));
+    )
+    .into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN));
 
     // draw the "F" + scroll-section arrow triangle
     display.clear(Rgb565::BLACK).unwrap();

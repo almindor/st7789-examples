@@ -1,21 +1,21 @@
 [package]
 name = "st7789-examples"
-version = "0.1.0"
+version = "0.6.0"
 authors = ["Ales Katona <almindor@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-cortex-m = "0.6.3"
-cortex-m-rt = "0.6.12"
+cortex-m = "0.7"
+cortex-m-rt = "0.6"
 display-interface = "0.4"
 display-interface-spi = "0.4"
-embedded-graphics = "0.6.2"
-embedded-hal = "0.2.4"
-cortex-m-semihosting = "0.3.5"
-panic-halt = "0.2.0"
-st7789 = "0.5.0"
+embedded-graphics = "0.7"
+embedded-hal = "0.2"
+cortex-m-semihosting = "0.3"
+panic-halt = "0.2"
+st7789 = "0.6"
 
 [dependencies.nrf52832-hal]
-version = "0.11.0"
+version = "0.12"
 default-features = false
 features = ["xxAA-package", "rt"]

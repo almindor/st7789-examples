@@ -12,7 +12,6 @@ use display_interface_spi::SPIInterfaceNoCS;
 use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::*;
 use embedded_graphics::primitives::*;
-use embedded_graphics::style::*;
 use nrf52832_hal::gpio::p0::Parts;
 use nrf52832_hal::gpio::Level;
 use nrf52832_hal::spim;
